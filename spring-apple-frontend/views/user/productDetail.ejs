@@ -1,0 +1,128 @@
+<html>
+<!-- ORIGINAL APPLE WEBSITE -->
+<!-- https://www.apple.com/th-en/shop/browse/home_th_en -->
+
+<head>
+  <%- include("header.ejs") %>
+  <link href="/css/quantityPicker.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <%- include("nav.ejs") %>
+
+    <!--Section: Block Content-->
+    <section style="padding-top: 2rem;" class="mb-5 container">
+
+      <div class="row">
+        <div class="col-md-6 mb-4 mb-md-0">
+          <div class="mdb-lightbox">
+            <div class="row product-gallery mx-1">
+              <div class="col-12 mb-0">
+                <div id="galleryCarousel" class="carousel slide" data-ride="carousel">
+                  <ol class="carousel-indicators">
+                    <% for(let i=0; i < item.images.length; i++) {%>
+                      <% if(i==0){ %>
+                        <li data-target="#galleryCarousel" data-slide-to="<%= i %>" class="active"></li>
+                        <% } else{ %>
+                          <li data-target="#galleryCarousel" data-slide-to="<%= i %>"></li>
+                          <% } %>
+                            <% } %>
+                  </ol>
+                  <div class="carousel-inner">
+                    <% for(let i=0; i < item.images.length; i++) {%>
+                      <div class="carousel-item <%= i == 0 ? 'active' : '' %>">
+                        <img class="d-block w-100" src="<%= item.images[i] %>">
+                      </div>
+                      <% } %>
+                  </div>
+                  <a class="carousel-control-prev" href="#galleryCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                  <a class="carousel-control-next" href="#galleryCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <h3>
+            <%- item.title %>
+          </h3>
+          <p class="mb-2 text-muted text-uppercase small">
+            <%- item.subtitle %>
+          </p>
+          <ul class="rating">
+            <% for(let i=0; i < item.rating ; i++) {%>
+              <i class="fas fa-star fa-sm text-primary"></i>
+              <% } %>
+                <% for(let i=0; i < 5 - item.rating ; i++) {%>
+                  <i class="far fa-star fa-sm text-primary"></i>
+                  <% } %>
+          </ul>
+          <p><span class="mr-1"><strong>$<%- item.price %></strong></span></p>
+
+          <!-- <button type="button" class="btn btn-primary btn-md mr-1 mb-2">Buy now</button> -->
+          <div class="row">
+            <fieldset class="col-4 offset-1" data-quantity>
+              <legend>Change quantity</legend>
+            </fieldset>
+            <button type="button" class="btn btn-primary btn-md mr-1 mb-2 offset-1"><strong>ADD TO
+                CART</strong></button>
+          </div>
+          <br>
+          <h3>Description</h3>
+          <p class="pt-1">
+            <%- item.description %>
+          </p>
+        </div>
+        <hr>
+
+      </div>
+
+      <div>
+        <h3>Reviews</h3>
+      </div>
+      <div>
+        <% for(let i=0; i < reviews.length; i++) {%>
+          <div class="media mt-3 mb-4">
+            <img class="d-flex mr-3 z-depth-1" src="<%= reviews[i].image %>" width="62" style="border-radius: 50%;">
+            <div class="media-body">
+              <div class="d-sm-flex justify-content-between">
+                <p class="mt-1 mb-2">
+                  <strong>
+                    <%= reviews[i].author %>
+                  </strong>
+                  <span>– </span><span>
+                    <%= reviews[i].createdAt %>
+                  </span>
+                </p>
+                <br>
+                <ul class="rating mb-sm-0">
+                  <% for(let j=0; j < reviews[i].rating ; j++) {%>
+                    <i class="fas fa-star fa-sm text-primary"></i>
+                    <% } %>
+                      <% for(let j=0; j < 5 - reviews[i].rating ; j++) {%>
+                        <i class="far fa-star fa-sm text-primary"></i>
+                        <% } %>
+                </ul>
+              </div>
+              <p class="mb-0">
+                <%= reviews[i].text %>
+              </p>
+            </div>
+          </div>
+          <hr>
+          <% } %>
+
+      </div>
+    </section>
+    <!--Section: Block Content-->
+
+    <script src="/js/quantityPicker.js" type="module"></script>
+</body>
+
+</html>

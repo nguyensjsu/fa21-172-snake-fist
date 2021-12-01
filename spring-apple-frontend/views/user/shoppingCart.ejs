@@ -1,0 +1,74 @@
+<html>
+<!-- ORIGINAL APPLE WEBSITE -->
+<!-- https://www.apple.com/th-en/shop/browse/home_th_en -->
+
+<head>
+    <%- include("header.ejs") %>
+    <link href="/css/shoppingCart.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <%- include("nav.ejs") %>
+
+    <div class="card">
+        <div class="row">
+            <div class="col-md-8 cart">
+                <div class="title">
+                    <div class="row">
+                        <div class="col">
+                            <h4><b>Shopping Cart</b></h4>
+                        </div>
+                        <div class="col align-self-center text-right text-muted">3 items</div>
+                    </div>
+                </div>
+
+                <% for(let i=0; i < items.length; i++) {%>
+                    <div class="row border-top <%= i == items.length - 1 ? 'border-bottom' : '' %>">
+                        <div class="row main align-items-center">
+                            <div class="col-2"><img class="img-fluid" src="<%= items[i].images[0] %>"></div>
+                            <div class="col">
+                                <div class="row text-muted"><%= items[i].subtitle %></div>
+                                <div class="row"><%= items[i].title %></div>
+                            </div>
+                            <div class="col"> 
+                                <a href="#"><i class="fas fa-minus-circle"></i></a>
+                                <a href="#" class="border"><%= items[i].quantity %></a>
+                                <a href="#"><i class="fas fa-plus-circle"></i></a> 
+                            </div>
+                            <div class="col">&dollar; <%= items[i].price %> <span class="close">&#10005;</span></div>
+                        </div>
+                    </div>
+                <% } %>
+
+                
+                <div class="back-to-shop"><a href="#">&leftarrow;</a><span class="text-muted">Back to shop</span>
+                </div>
+            </div>
+            <div class="col-md-4 summary">
+                <div>
+                    <h5><b>Summary</b></h5>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col" style="padding-left:0;">Subtotal</div>
+                    <div class="col text-right">&dollar; 132.00</div>
+                </div>
+                <!-- <div class="row">
+                    <div class="col" style="padding-left:0;">Shipping</div>
+                    <div class="col text-right">&dollar; 25.00</div>
+                </div>
+                <div class="row">
+                    <div class="col" style="padding-left:0;">Tax</div>
+                    <div class="col text-right">&dollar; 10.00</div>
+                </div> -->
+            
+                <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                    <div class="col">TOTAL</div>
+                    <div class="col text-right">&dollar; 132.00</div>
+                </div> <button class="btn">CHECKOUT</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

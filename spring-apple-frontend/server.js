@@ -51,8 +51,14 @@ app.get('/', (req, res) => {
 app.get('/detail', (req, res) => {
 
     let item = {
-        images: ['https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-air-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1573580916082'],
+        rating:5,
+        images: [
+            'https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-air-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1573580916082',
+            'https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-air-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1573580916082',
+            'https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-air-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1573580916082'
+        ],
         title: "MacBook Air",
+        subtitle: "sub-category",
         price: 35000,
         currency: "USD",
         description: `Super compact yoga mat with attached straps
@@ -67,8 +73,61 @@ app.get('/detail', (req, res) => {
         One food-producing tree planted per mat in Africa
         Due to virus concerns, we are unable to accept returns of this product at this time`
     }
-    res.render("user/productDetail", {item});
+
+    let reviews = [{
+        rating: 4,
+        createdAt: "January 28, 2020",
+        author: "Test User",
+        image: "https://mdbootstrap.com/img/Photos/Others/placeholder1.jpg",
+        text: "this is a comment"
+    },{
+        rating: 4,
+        createdAt: "January 28, 2020",
+        author: "Test User",
+        image: "https://mdbootstrap.com/img/Photos/Others/placeholder1.jpg",
+        text: "this is a comment"
+    },{
+        rating: 4,
+        createdAt: "January 28, 2020",
+        author: "Test User",
+        image: "https://mdbootstrap.com/img/Photos/Others/placeholder1.jpg",
+        text: "this is a comment"
+    }]
+    res.render("user/productDetail", {item, reviews});
 })
+
+app.get('/shoppingCart', (req, res) => {
+
+    let items = [{
+        rating:5,
+        images: [
+            'https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-air-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1573580916082',
+            'https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-air-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1573580916082',
+            'https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-air-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1573580916082'
+        ],
+        title: "MacBook Air",
+        subtitle: "sub-category",
+        price: 35000,
+        currency: "USD",
+        quantity: 2
+    },{
+        rating:5,
+        images: [
+            'https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-air-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1573580916082',
+            'https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-air-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1573580916082',
+            'https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-air-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1573580916082'
+        ],
+        title: "MacBook Air",
+        subtitle: "sub-category",
+        price: 35000,
+        currency: "USD",
+        quantity: 2
+    }]
+
+    res.render("user/shoppingCart", {items});
+})
+
+
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
