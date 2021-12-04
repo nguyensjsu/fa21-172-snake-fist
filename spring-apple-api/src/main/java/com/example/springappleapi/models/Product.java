@@ -2,6 +2,7 @@ package com.example.springappleapi.models;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,13 +16,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 public class Product {
-    @Getter
+    @Getter@Setter
     private @Id @GeneratedValue Long id;
     @Getter@Setter
     private String title;
     @Getter@Setter
     private String subtitle;
     @Getter@Setter
+    @Column(length = 3000) 
     private String description;
     @Getter@Setter
     private String[] images;
@@ -31,4 +33,8 @@ public class Product {
     private String status;
     @Getter@Setter
     private Date createdAt;
+    @Getter@Setter
+    private float price;
+    @Getter@Setter
+    private float rating;
 }

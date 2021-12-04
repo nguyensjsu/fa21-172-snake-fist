@@ -1,6 +1,6 @@
 <nav>
     <ul>
-        <li><a href="#"><i class="fab fa-apple"></i></a></li>
+        <li><a href="/"><i class="fab fa-apple"></i></a></li>
         <li><a href="#">Mac</a></li>
         <li><a href="#">iPad</a></li>
         <li><a href="#">iPhone</a></li>
@@ -8,7 +8,30 @@
         <li><a href="#">TV</a></li>
         <li><a href="#">Music</a></li>
         <li><a href="#">Service</a></li>
-        <li><a href="#"><i class="fas fa-search"></i></a></li>
-        <li><a href="#"><i class="fas fa-shopping-bag"></i></a></li>
+        <li><a href="/shoppingCart"><i class="fas fa-shopping-bag"></i></a></li>
+        <li id="loginIcon"><a href="/login"><i class="fas fa-sign-in-alt"></i></a></li>
+        <li id="profileIcon">
+            <a href="#"><i class="fas fa-user"></i></a>
+            <div class="btn-group">
+                <a class="dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" href="#">Setting</a>
+                    <a class="dropdown-item" href="/orders">Orders</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" onclick="localStorage.setItem('currentUser', '{}'); window.location='/'">Logout</a>
+                </div>
+            </div>
+        </li>
+        
     </ul>
 </nav>
+
+<script>
+    let currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (currentUser.id )
+        document.getElementById('loginIcon').style.display = "none";
+    else
+        document.getElementById('profileIcon').style.display = "none";
+    
+    
+</script>

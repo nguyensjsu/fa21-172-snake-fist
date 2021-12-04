@@ -70,8 +70,7 @@
             <fieldset class="col-4 offset-1" data-quantity>
               <legend>Change quantity</legend>
             </fieldset>
-            <button type="button" class="btn btn-primary btn-md mr-1 mb-2 offset-1"><strong>ADD TO
-                CART</strong></button>
+            <button type="button" class="btn btn-primary btn-md mr-1 mb-2 offset-1" onclick="addToCart()"><strong>ADD TO CART</strong></button>
           </div>
           <br>
           <h3>Description</h3>
@@ -121,6 +120,19 @@
       </div>
     </section>
     <!--Section: Block Content-->
+
+    <script>
+      function addToCart(){
+        console.log("got here")
+        let currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+        if (!currentUser.id){
+          window.location.href = `/login?redirect=${encodeURIComponent(window.location)}`;
+        }
+        else {
+
+        }
+      }
+    </script>
 
     <script src="/js/quantityPicker.js" type="module"></script>
 </body>

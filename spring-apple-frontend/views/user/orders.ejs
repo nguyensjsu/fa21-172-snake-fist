@@ -1,0 +1,90 @@
+<html>
+<!-- ORIGINAL APPLE WEBSITE -->
+<!-- https://www.apple.com/th-en/shop/browse/home_th_en -->
+<head>
+    <%- include("header.ejs") %>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,700&display=swap');
+
+        .order-section {
+            width: 100%;
+            height: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 0;
+            cursor: pointer;
+        }
+        .order-section h2 {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+        .container {
+            width: 700;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+        .grid {
+            width: 100%;
+        }
+        .grid-item {
+            background: white;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            transition: .5s;
+            border-radius: 1rem;
+            box-shadow: 2px 4px 12px rgb(0 0 0 / 8%);
+            margin: 2rem;
+        }
+        .grid-item:hover {
+            transform: scale(1.02);
+            box-shadow: 2px 4px 12px rgb(0 0 0 / 18%)
+        }
+        .grid-item img {
+            width: 300px;
+        }
+        .grid-detail {
+            margin: 20px 0;
+            /* text-align: center; */
+        }
+        .grid-detail p:last-child {
+            transition: .5s;
+            margin-top: 10px;
+        }
+        .grid-item:hover > .grid-detail p:last-child {
+            color: #3498db;
+        }
+
+    </style>
+</head>
+<body>
+    <%- include("nav.ejs") %>
+
+    <section class="order-section">
+        <div class="container">
+            <h2>Orders</h2>
+            <div class="grid">
+                <% for(let i=0; i < items.length; i++) {%>
+                    <div class="grid-item">
+                        <!-- <div class="row"> -->
+                            <span class="col-6"><img src="<%= items[i].images[0] %>"></span>
+                            <div class="col-6 grid-detail">
+                                <h5>Order#: 8716431 <span class="badge badge-pill badge-secondary">Pending</span></h5>
+                                <div>$<%= items[i].price %></div>
+                                <div>3 item(s)</div>
+                                <div>12/02/2020 2:34pm</div>
+                            </div>
+                        <!-- </div> -->
+                    </div>
+                <% } %>
+            </div>
+            <!--end grid-->
+        </div>
+        <!--end container-->
+    </section>
+</body>
+
+</html>
