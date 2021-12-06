@@ -4,18 +4,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 
-import com.example.springappleapi.models.PaymentsCommand;
 import com.example.springappleapi.models.Product;
 import com.example.springappleapi.models.ShoppingCart;
 import com.example.springappleapi.models.ShoppingCartItem;
-import com.example.springappleapi.repositories.PaymentsCommandRepository;
 import com.example.springappleapi.repositories.ProductRepository;
 import com.example.springappleapi.repositories.ShoppingCartItemRepository;
 import com.example.springappleapi.repositories.ShoppingCartRepository;
 import com.example.springappleapi.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,14 +26,12 @@ import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
 
-import com.example.springappleapi.Exceptions.CartNotFoundException;
 import com.example.springappleapi.Exceptions.UserNotFoundException;
 import com.example.springappleapi.Exceptions.UsernameOrEmailTakenException;
 import com.example.springappleapi.Exceptions.WrongUsernamePasswordException;
 import com.example.springappleapi.Utils.CartUpdatePayload;
 import com.example.springappleapi.Utils.SignupPayload;
 import com.example.springappleapi.models.User;
-import com.example.springappleapi.payment.PaymentProcessor;
 
 
 @Slf4j 
@@ -48,13 +43,6 @@ public class UserController {
     private ShoppingCartRepository cartRepository;
     @Autowired
     private ShoppingCartItemRepository itemCartRepository;
-    @Autowired
-    private PaymentsCommandRepository paymentsCommandRepository;
-
-    @Value("${cybersource.apihost}") String apiHost;
-    @Value("${cybersource.merchantkeyid}") String merchantKeyId;
-    @Value("${cybersource.merchantsecretkey}") String merchantsecretKey;
-    @Value("${cybersource.merchantid}") String merchantId;
 
     @RequestMapping("/user/signup")
     @PostMapping
@@ -115,39 +103,6 @@ public class UserController {
         }
     }
 
-    @RequestMapping("/user/{userId}/shoppingCart/{cartId}")
-    @GetMapping
-    ShoppingCart getCartById(@PathVariable long userId, @PathVariable long cartId) {
-        Optional<User> user = userRepository.findById(userId);
-
-        if (user.isPresent()){
-            Optional<ShoppingCart> cart = cartRepository.findById(cartId);
-            if (cart.isPresent()){
-                return cart.get();
-            }
-            else {
-                throw new CartNotFoundException(cartId);
-            }
-        }
-        else {
-            throw new UserNotFoundException(userId);
-        }
-    }
-
-    @RequestMapping("/user/{userId}/orders")
-    @GetMapping
-    List<ShoppingCart> getOrders(@PathVariable long userId) {
-        Optional<User> user = userRepository.findById(userId);
-
-        if (user.isPresent()){
-            List<ShoppingCart> carts = cartRepository.findAllByUserIdAndActive(userId, false);
-            return carts;
-        }
-        else {
-            throw new UserNotFoundException(userId);
-        }
-    }
-
     @RequestMapping("/user/{userId}/shoppingCart/modify")
     @PostMapping
     ShoppingCart modifyCart(@PathVariable long userId, @RequestBody CartUpdatePayload payload) {
@@ -158,11 +113,10 @@ public class UserController {
             String operation = payload.getOperation();
             long productId = payload.getProductId();
             Optional<ShoppingCartItem> currentItemQuery = itemCartRepository.findByShoppingCartIdAndItemId(activeCart.getId(), productId);
-            ShoppingCartItem item;
-
 
             switch(operation){
                 case "ADD":
+                    ShoppingCartItem item;
                     int addedAmount = payload.getQuantity() > 0 ? payload.getQuantity() : 1;
                     if (currentItemQuery.isPresent()){
                         item = currentItemQuery.get();
@@ -179,65 +133,11 @@ public class UserController {
                     }
                     itemCartRepository.save(item);
                     break;
-                case "REMOVE":
-                    int removeAmount = payload.getQuantity() > 0 ? payload.getQuantity() : 1;
-                    if (currentItemQuery.isPresent()){
-                        item = currentItemQuery.get();
-                        
-                        item.setQuantity(item.getQuantity() - removeAmount);
-                        if (item.getQuantity() > 0){
-                            itemCartRepository.save(item);
-                        }
-                        else {
-                            itemCartRepository.delete(item);
-                        }
-                    }
-                    break;
                 case "DELETE":
-                    if (currentItemQuery.isPresent()){
-                        item = currentItemQuery.get();
-                        itemCartRepository.delete(item);
-                    }
-                    break;
+
                 default:
-                    break;
+
             }
-            return activeCart;
-        }
-        else {
-            throw new UserNotFoundException(userId);
-        }
-    }
-
-    @RequestMapping("/user/{userId}/shoppingCart/pay")
-    @PostMapping
-    ShoppingCart pay(@PathVariable long userId, @RequestBody PaymentsCommand command) {
-        Optional<User> user = userRepository.findById(userId);
-
-        if (user.isPresent()){
-            ShoppingCart activeCart = getActiveCart(user.get()); 
-            command.cart = activeCart;     
-            command = paymentsCommandRepository.save(command);       
-            
-            float total = 0;
-
-            for (int i = 0; i < activeCart.items.size(); i++){
-                total += activeCart.items.get(i).getQuantity() * activeCart.items.get(i).item.getPrice();
-            }
-
-            total = total * 1.1f;
-
-            PaymentProcessor paymentProcessor = new PaymentProcessor(apiHost, merchantKeyId, merchantsecretKey, merchantId);
-            String response = paymentProcessor.process(command, "" + total, userId);   
-
-            command.setResponse(response);
-            command.setStatus(response.split("\\|").length == 2 ? "SUCCESS" : "FAIL");
-            if (command.getStatus().compareTo("SUCCESS") == 0){
-                activeCart.setActive(false);
-            }
-
-            paymentsCommandRepository.save(command);
-
             return activeCart;
         }
         else {
@@ -245,4 +145,3 @@ public class UserController {
         }
     }
 }
-

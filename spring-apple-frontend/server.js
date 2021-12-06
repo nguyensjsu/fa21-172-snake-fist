@@ -64,192 +64,80 @@ app.get('/products/:id', (req, res) => {
     })
 })
 
-app.get('/user/:userId/shoppingCart', (req, res) => {
-    request({
-        url: `${SERVICE_ENDPOINT}/user/${req.params.userId}/shoppingCart`,
-        method: 'GET'
-    }, (err, r, body) => {
-        let itemCount = 0;
-        let subtotal = 0;
+app.get('/shoppingCart', (req, res) => {
 
-        let items = (JSON.parse(body).items || []).map((item) => {
-            itemCount += item.quantity;
-            subtotal += (item.quantity * item.item.price);
-            return {
-                ...item.item,
-                quantity: item.quantity
-            }
-        });
+    let items = [{
+        rating:5,
+        images: [
+            'https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-air-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1573580916082',
+            'https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-air-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1573580916082',
+            'https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-air-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1573580916082'
+        ],
+        title: "MacBook Air",
+        subtitle: "sub-category",
+        price: 35000,
+        currency: "USD",
+        quantity: 2
+    },{
+        rating:5,
+        images: [
+            'https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-air-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1573580916082',
+            'https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-air-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1573580916082',
+            'https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-air-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1573580916082'
+        ],
+        title: "MacBook Air",
+        subtitle: "sub-category",
+        price: 35000,
+        currency: "USD",
+        quantity: 2
+    }]
 
-        let formatter = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-        });
-
-        res.render("user/shoppingCart", {
-            items, 
-            itemCount,
-            subtotal: formatter.format(subtotal),
-            tax: formatter.format(subtotal * 0.1),
-            total: formatter.format(subtotal * 1.1),
-            userId: req.params.userId
-        });
-    })
-})
-
-app.get('/user/:userId/shoppingCart/checkout', (req, res) => {
-    request({
-        url: `${SERVICE_ENDPOINT}/user/${req.params.userId}/shoppingCart`,
-        method: 'GET'
-    }, (err, r, body) => {
-        let itemCount = 0;
-        let subtotal = 0;
-        let cart = JSON.parse(body);
-        let items = (cart.items || []).map((item) => {
-            itemCount += item.quantity;
-            subtotal += (item.quantity * item.item.price);
-            return {
-                ...item.item,
-                quantity: item.quantity
-            }
-        });
-
-        let formatter = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-        });
-
-        res.render("user/checkout", {
-            userId: req.params.userId,
-            cartId: cart.id,
-            items, 
-            itemCount,
-            subtotal: formatter.format(subtotal),
-            tax: formatter.format(subtotal * 0.1),
-            total: formatter.format(subtotal * 1.1)
-        });
-    })
-})
-
-app.get('/user/:userId/shoppingCart/:cartId/thankyou', (req, res) => {
-    request({
-        url: `${SERVICE_ENDPOINT}/user/${req.params.userId}/shoppingCart/${req.params.cartId}`,
-        method: 'GET'
-    }, (err, r, body) => {
-        let itemCount = 0;
-        let subtotal = 0;
-        let cart = JSON.parse(body);
-        let transaction = cart.transactions[cart.transactions.length - 1];
-        let items = (cart.items || []).map((item) => {
-            itemCount += item.quantity;
-            subtotal += (item.quantity * item.item.price);
-            return {
-                ...item.item,
-                quantity: item.quantity
-            }
-        });
-
-        let formatter = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-        });
-        console.log(JSON.stringify(cart, null, 4))
-
-        res.render("user/thankyou", {
-            items, 
-            itemCount,
-            subtotal: formatter.format(subtotal),
-            tax: formatter.format(subtotal * 0.1),
-            total: formatter.format(subtotal * 1.1),
-            userId: req.params.userId,
-            address: transaction.address,
-            city: transaction.city,
-            state: transaction.state,
-            zip: transaction.zip,
-            paymentMethod: `**** ${transaction.cardnum.slice(transaction.cardnum.length - 4)}`,
-            transactionId: JSON.parse(transaction.response.split("|")[0]).id
-        });
-    })
+    res.render("user/shoppingCart", {items});
 })
 
 app.get('/login', (req, res) => {
     res.render("user/login");
 })
 
-app.get('/user/:userId/orders', (req, res) => {
-    request({
-        url: `${SERVICE_ENDPOINT}/user/${req.params.userId}/orders`,
-        method: 'GET'
-    }, (err, r, body) => {
-        let formatter = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-        });
-        console.log(body)
-        let orders = JSON.parse(body).map((cart)=>{
-            let itemCount = 0;
-            let subtotal = 0;
-            let transaction = cart.transactions[cart.transactions.length - 1];
-            (cart.items || []).map((item) => {
-                itemCount += item.quantity;
-                subtotal += (item.quantity * item.item.price);
-                return {
-                    ...item.item,
-                    quantity: item.quantity
-                }
-            });
-    
-            return {
-                itemCount,
-                total: formatter.format(subtotal * 1.1),
-                userId: req.params.userId,
-                transactionId: JSON.parse(transaction.response.split("|")[0]).id,
-                images: cart.items[0].item.images
-            };
-        })
+app.get('/orders', (req, res) => {
 
-        res.render("user/orders", {orders});
-    })
-
-
-
-    // let items = [{
-    //     images: ['https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-air-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1573580916082'],
-    //     title: "MacBook Air",
-    //     price: 35000,
-    //     currency: "USD"
-    // },
-    // {
-    //     images: ['https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-pro-segment-2019?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1573580916135'],
-    //     title: "MacBook Pro",
-    //     price: 42900,
-    //     currency: "USD"
-    // },
-    // {
-    //     images: ['https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/imac-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1570232081431'],
-    //     title: "iMac",
-    //     price: 37900,
-    //     currency: "USD"
-    // },
-    // {
-    //     images: ['https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/imac-pro-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1570231926191'],
-    //     title: "iMac Pro",
-    //     price: 172900,
-    //     currency: "USD"
-    // },
-    // {
-    //     images: ['https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/mac-pro-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1524766968633'],
-    //     title: "Mac Pro",
-    //     price: 114900,
-    //     currency: "USD"
-    // },
-    // {
-    //     images: ['https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/mac-mini-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1539466285370'],
-    //     title: "Mac mini",
-    //     price: 27900,
-    //     currency: "USD"
-    // }]
-    
+    let items = [{
+        images: ['https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-air-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1573580916082'],
+        title: "MacBook Air",
+        price: 35000,
+        currency: "USD"
+    },
+    {
+        images: ['https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-pro-segment-2019?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1573580916135'],
+        title: "MacBook Pro",
+        price: 42900,
+        currency: "USD"
+    },
+    {
+        images: ['https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/imac-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1570232081431'],
+        title: "iMac",
+        price: 37900,
+        currency: "USD"
+    },
+    {
+        images: ['https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/imac-pro-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1570231926191'],
+        title: "iMac Pro",
+        price: 172900,
+        currency: "USD"
+    },
+    {
+        images: ['https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/mac-pro-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1524766968633'],
+        title: "Mac Pro",
+        price: 114900,
+        currency: "USD"
+    },
+    {
+        images: ['https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/mac-mini-segment?wid=800&hei=600&fmt=png-alpha&qlt=80&.v=1539466285370'],
+        title: "Mac mini",
+        price: 27900,
+        currency: "USD"
+    }]
+    res.render("user/orders", {items: items});
 })
 
 app.listen(port, () => {

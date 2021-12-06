@@ -67,15 +67,15 @@
         <div class="container">
             <h2>Orders</h2>
             <div class="grid">
-                <% for(let i=0; i < orders.length; i++) {%>
+                <% for(let i=0; i < items.length; i++) {%>
                     <div class="grid-item">
                         <!-- <div class="row"> -->
-                            <span class="col-6"><img src="<%= orders[i].images[0] %>"></span>
+                            <span class="col-6"><img src="<%= items[i].images[0] %>"></span>
                             <div class="col-6 grid-detail">
-                                <h5>Order#: <%= orders[i].transactionId %> </h5>
-                                <div><%= orders[i].total %></div>
-                                <div><%= orders[i].itemCount %> item(s)</div>
-                                <!-- <div>12/02/2020 2:34pm</div> -->
+                                <h5>Order#: 8716431 <span class="badge badge-pill badge-secondary">Pending</span></h5>
+                                <div>$<%= items[i].price %></div>
+                                <div>3 item(s)</div>
+                                <div>12/02/2020 2:34pm</div>
                             </div>
                         <!-- </div> -->
                     </div>
