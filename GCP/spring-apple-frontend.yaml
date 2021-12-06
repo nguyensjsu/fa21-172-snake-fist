@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+ kind: Deployment
+ metadata:
+   name: spring-apple-frontend
+   namespace: default
+ spec:
+   replicas: 1
+   selector:
+     matchLabels:
+       name: spring-apple-frontend
+   template:
+     metadata:
+       labels:
+         name: spring-apple-frontend
+     spec:
+       containers:
+         - image: mk2017/spring-apple-frontend:latest
+           name: spring-apple-frontend
+           ports:
+           - containerPort: 3000
+ ---
+ apiVersion: v1
+ kind: Service
+ metadata:
+   name: spring-apple-frontend-service 
+   namespace: default
+ spec:
+   type: ClusterIP
+   ports:
+   - port: 80
+     targetPort: 3000
+   selector:
+     name: spring-apple-frontend 
