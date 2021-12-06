@@ -33,7 +33,10 @@ public class ShoppingCart {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "shoppingCart")
-    private List<ShoppingCartItem> items;
+    public List<ShoppingCartItem> items;
+
+    @OneToMany(mappedBy = "cart")
+    public List<PaymentsCommand> transactions;
 
     @Getter@Setter
     @ManyToOne
