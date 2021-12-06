@@ -8,7 +8,7 @@
         <li><a href="#">TV</a></li>
         <li><a href="#">Music</a></li>
         <li><a href="#">Service</a></li>
-        <li><a href="/shoppingCart"><i class="fas fa-shopping-bag"></i></a></li>
+        <li id="shoppingCartIcon"><a href="#"><i class="fas fa-shopping-bag"></i></a></li>
         <li id="loginIcon"><a href="/login"><i class="fas fa-sign-in-alt"></i></a></li>
         <li id="profileIcon">
             <a href="#"><i class="fas fa-user"></i></a>
@@ -16,7 +16,7 @@
                 <a class="dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <a class="dropdown-item" href="#">Setting</a>
-                    <a class="dropdown-item" href="/orders">Orders</a>
+                    <a  id="orderButton" class="dropdown-item" href="#">Orders</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#" onclick="localStorage.setItem('currentUser', '{}'); window.location='/'">Logout</a>
                 </div>
@@ -28,10 +28,24 @@
 
 <script>
     let currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    if (currentUser.id )
+    let shoppingCartIcon = document.getElementById('shoppingCartIcon');
+
+    if (currentUser.id){
         document.getElementById('loginIcon').style.display = "none";
-    else
+        shoppingCartIcon.addEventListener("click", () => {
+            window.location = `/user/${currentUser.id}/shoppingCart`;
+        })
+    }
+    else {
         document.getElementById('profileIcon').style.display = "none";
-    
+        shoppingCartIcon.addEventListener("click", () => {
+            //window.location = `/login?redirect=${encodeURIComponent(`${window.location.host}/user/${currentUser.id}/shoppingCart`)}` ;
+            window.location = `/login`;
+        })
+    }
+
+    document.getElementById('orderButton').addEventListener("click", () => {
+        window.location = `/user/${currentUser.id}/orders`;
+    })
     
 </script>

@@ -5,6 +5,9 @@
 <head>
   <%- include("header.ejs") %>
   <link href="/css/quantityPicker.css" rel="stylesheet" type="text/css" />
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+  integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+  crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -70,7 +73,7 @@
             <fieldset class="col-4 offset-1" data-quantity>
               <legend>Change quantity</legend>
             </fieldset>
-            <button type="button" class="btn btn-primary btn-md mr-1 mb-2 offset-1" onclick="addToCart()"><strong>ADD TO CART</strong></button>
+            <button style="border-radius: 40px;" type="button" class="btn btn-primary btn-md mr-1 mb-2 offset-1" onclick="addToCart()"><strong>Add To Cart</strong></button>
           </div>
           <br>
           <h3>Description</h3>
@@ -121,6 +124,17 @@
     </section>
     <!--Section: Block Content-->
 
+    <div class="modal" tabindex="-1" role="dialog" id="modal-message">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-body text-center">
+            <p>Item added</p>
+            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script>
       function addToCart(){
         console.log("got here")
@@ -129,7 +143,22 @@
           window.location.href = `/login?redirect=${encodeURIComponent(window.location)}`;
         }
         else {
-
+          $.ajax({
+                type: "POST",
+                url: (`http://localhost:8080/user/${currentUser.id}/shoppingCart/modify`),
+                contentType: "application/json",
+                data: JSON.stringify({
+                  operation: "ADD",
+                  productId: "<%= item.id %>",
+                  quantity: 1
+                }),
+                success: function(xhr, res, options){
+                    $('#modal-message').modal("toggle");
+                },
+                error: function(xhr){      
+                    alert(xhr);
+                }
+            });
         }
       }
     </script>
