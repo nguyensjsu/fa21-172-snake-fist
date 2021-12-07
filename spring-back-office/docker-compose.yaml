@@ -1,0 +1,50 @@
+version: "3"
+
+services:
+
+  db:
+    image: mysql:5.7
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: back_office
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: springuser
+      # You can use whatever password you like
+      MYSQL_PASSWORD: admin
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: cmpe172
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - 3309:3306
+    volumes:
+      - /tmp:/tmp
+
+  backoffice:
+    image: spring-back-office
+    restart: on-failure
+    volumes:
+      - /tmp:/tmp
+    ports:
+      - 8080:8080
+    depends_on:
+      - db 
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/back_office?autoReconnect=true&useSSL=false
+
+
+  # lb:
+  #   image: eeacms/haproxy
+  #   links:
+  #   - payments
+  #   - mysql
+  #   ports:
+  #   - "80:5000"
+  #   - "1936:1936"
+  #   environment:
+  #     BACKENDS: "payments"
+  #     BACKENDS_PORT: "8080"
+  #     DNS_ENABLED: "true"
+  #     COOKIES_ENABLED: "false"
+  #     LOG_LEVEL: "info"
+  #   networks:
+  #     - network
