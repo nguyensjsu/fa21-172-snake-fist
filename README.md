@@ -3,6 +3,11 @@
 ## Functional and Technical Requirements
 ### Functional Requirements
 * Front Office Portal:
+  1. User Sign-up/Login: Users need to Sign-up or Login to start purchasing products.
+  2. Products Browsing Page: allows Users to browse all the products that are available on the website.
+  3. Products Detail Page: allows Users to see more details of a product, adjust the quantity, and add the product to cart.
+  4. Payment Page: allows Users to make a payment online by asking for their name, card info, and shipping address. A Payment Receive with an Order Confirmation number will shown after the payment is processed successfully. 
+  5. Order Review Page: allows Users to review their order and Request a Refund. 
 * Back Office Portal:
 * REST APIs:
 ### Technical Requirements
