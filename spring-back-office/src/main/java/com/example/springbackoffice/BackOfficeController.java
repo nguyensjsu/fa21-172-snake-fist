@@ -1,9 +1,7 @@
 package com.example.springbackoffice;
 
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -28,8 +26,8 @@ class ExampleRestController {
     private RefundRepository refundRepository;
 
     @GetMapping
-    public String helloUser(@AuthenticationPrincipal OidcUser user, Model model) {
-        model.addAttribute("name", user.getFullName());
+    public String helloUser() {
+        //model.addAttribute("name", user.getFullName());
         return "home";
     }
 

@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-back-office
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      name: spring-back-office
+  replicas: 4 # tells deployment to run 2 pods matching the template
+  template: # create pods using pod definition in this template
+    metadata:
+      # unlike pod.yaml, the name is not included in the meta data as a unique name is
+      # generated from the deployment name
+      labels:
+        name: spring-back-office
+    spec:
+      containers:
+      - name: spring-back-office
+        image: miguelg719/spring-back-officel:v1
+        env:
+        - name: MYSQL_HOST
+          value: "10.30.80.3"   
+        ports:
+        - containerPort: 8080
