@@ -1,10 +1,14 @@
 # Snakefist Team Project Journal 
 # Link to Video Demo of Apple Clone Store Application: Front Office Portal and Back Office Portal
 https://drive.google.com/file/d/1dFSjrgyjdU6K3-sfZv212cx1XuiVJSuH/view?usp=sharing
+
 ## Architecture Diagram
 <img width="428" alt="Screenshot 2021-12-06 235640" src="https://user-images.githubusercontent.com/65844160/144989063-5593c916-0b75-4d97-9215-9dc85ee0c97e.png">
+
 ## Functional and Technical Requirements
+
 ### Functional Requirements
+
 * Front Office Portal:
   1. User Sign-up/Login: Users need to Sign-up or Login to start purchasing products.
   2. Products Browsing Page: allows Users to browse all the products that are available on the website.
@@ -13,7 +17,8 @@ https://drive.google.com/file/d/1dFSjrgyjdU6K3-sfZv212cx1XuiVJSuH/view?usp=shari
   5. Order Review Page: allows Users to review their order and Request a Refund. 
 * Back Office Portal:
   1. Request Refund with RabbitMQ: allows admin to handle the Refund Request Ticket that they get assigned by RabbitMQ. First ticket will get to be assigned first to the available admin.
-* REST APIs:
+* REST APIs:Postman
+* 
 ### Technical Requirements
 * Software Stack & Tools
   1. Front Office Portal:
