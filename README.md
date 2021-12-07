@@ -44,6 +44,16 @@ https://drive.google.com/file/d/1dFSjrgyjdU6K3-sfZv212cx1XuiVJSuH/view?usp=shari
 * Request Refund with RabbitMQ Integration (Frontend, Backend)
 * Order Review Page (Backend)
 ### Discussion of accomplishment:
+## Individual Journal by Malaak Khalil by Dec 6, 2021:
+### Accomplished Tasks:
+GCP Deployment 
+Kong API Gateway
+Management
+in commits
+### Discussion of accomplishment:
+Successfully completed all assigneed taskes (delpoy to GCP, KongAPI Gateway, ect)
+### Discussion of challenges and solutions:
+Biggest challange was deploying to GCP since we waited till the end and deploying all things 
 
 
 
