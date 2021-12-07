@@ -5,6 +5,7 @@ apiVersion: v1
  data:
    01.sql: |
      CREATE DATABASE IF NOT EXISTS `apple-api`;
+     CREATE DATABASE IF NOT EXISTS `back_office`;
  ---
  apiVersion: apps/v1
  kind: Deployment
