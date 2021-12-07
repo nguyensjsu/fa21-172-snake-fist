@@ -30,6 +30,8 @@ https://drive.google.com/file/d/1dFSjrgyjdU6K3-sfZv212cx1XuiVJSuH/view?usp=shari
 * Product Browsing Page(Backend, Frontend)
 * Shopping Cart Page(Backend, Frontend)
 * Order Page (Frontend)
+<img width="959" alt="Screenshot 2021-12-06 234026" src="https://user-images.githubusercontent.com/65844160/144986955-39719cf6-00e8-4f4d-a4e8-e5f087e426e8.png">
+<img width="960" alt="Screenshot 2021-12-06 234045" src="https://user-images.githubusercontent.com/65844160/144986962-e2b7a5ee-ee74-42b6-a5e5-6c9b58038da4.png">
 ### Discussion of accomplishment:
 * https://github.com/nguyensjsu/fa21-172-snake-fist/commit/225ab47782920cb057b544dd1f9a61d12be2cd14
 * https://github.com/nguyensjsu/fa21-172-snake-fist/commit/fa847b99aec2c926b5f0fdad988c46b30d864691
