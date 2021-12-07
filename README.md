@@ -44,6 +44,7 @@ https://drive.google.com/file/d/1dFSjrgyjdU6K3-sfZv212cx1XuiVJSuH/view?usp=shari
 * Request Refund with RabbitMQ Integration (Frontend, Backend)
 * Order Review Page (Backend)
 ### Discussion of accomplishment:
+
 ## Individual Journal by Malaak Khalil by Dec 6, 2021:
 ### Accomplished Tasks:
 GCP Deployment 
