@@ -57,4 +57,4 @@ Successfully completed all assigneed taskes (delpoy to GCP, KongAPI Gateway, ect
 Biggest challange was deploying to GCP since we waited till the end and deploying all things 
 
 
-
+![Image](https://github.com/nguyensjsu/fa21-172-snake-fist/blob/96136d18bfc28bf51c5aab9f547acfdaa34ef5b3/Screen%20Shot%202021-12-06%20at%2011.52.53%20PM.png)
