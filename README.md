@@ -1,4 +1,6 @@
 # Snakefist Team Project Journal 
+# Link to Video Demo of Apple Clone Store Application: Front Office Portal and Back Office Portal
+https://drive.google.com/file/d/1dFSjrgyjdU6K3-sfZv212cx1XuiVJSuH/view?usp=sharing
 ## Architecture Diagram
 ## Functional and Technical Requirements
 ### Functional Requirements
