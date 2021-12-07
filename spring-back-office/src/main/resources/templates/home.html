@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org">
+
+<html>
+<head>
+    <title>Back Office Help Desk</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> 
+</head>
+
+<body>
+    <div style="display:flex; flex-direction: column; justify-content: center; align-items: center">
+        <div style="background-color: gray;">
+            <img style="object-fit:contain" src="https://www.apple.com/careers/images/retail-tech-support/video-hero/melissa/default.jpg" alt="" />
+        </div>
+        <h1 style="padding-top: 25px">Welcome to your Help Desk</h1>
+            <div th:text="${name}" style="justify-content: center; align-items: center"></div>    
+        <br></br>
+    
+        <h3>How can we help you today?</h3>
+        <div style="display:flex; flex-direction: row">
+            <div style="padding:30px">
+                <a class="btn btn-outline-primary" href="/contact">Contact Us</a>
+            </div>
+            <div style="padding:30px">
+                <a class="btn btn-outline-primary" href="/schedule">Schedule a Genius Appointment</a>
+            </div>
+            <div style="padding:30px">
+                <a class="btn btn-outline-primary" href="/refund">Request a Refund</a>
+            </div>
+        </div>
+    </div>
+ </body>
+
+ </html>
