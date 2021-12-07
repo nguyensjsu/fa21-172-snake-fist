@@ -2,6 +2,7 @@
 # Link to Video Demo of Apple Clone Store Application: Front Office Portal and Back Office Portal
 https://drive.google.com/file/d/1dFSjrgyjdU6K3-sfZv212cx1XuiVJSuH/view?usp=sharing
 ## Architecture Diagram
+<img width="428" alt="Screenshot 2021-12-06 235640" src="https://user-images.githubusercontent.com/65844160/144989063-5593c916-0b75-4d97-9215-9dc85ee0c97e.png">
 ## Functional and Technical Requirements
 ### Functional Requirements
 * Front Office Portal:
