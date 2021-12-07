@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<head>
+    <title>Genius Appointment</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> 
+</head>
+
+<body>
+    <div style="display:flex; flex-direction: column; justify-content: center; align-items: center">
+        <h1 style="padding-top: 40px; padding-bottom: 20px;">Schedule your Genius Appointment</h1>
+        <form name="form" th:action="@{/schedule}" th:object="${time}" method="post" action="">
+            <div class="form-group">
+                <p>Day:</p>
+                <select class="form-control" id="day" name="day" th:field="*{day}">
+                    <option value="Monday, Dec 6">Monday, Dec 6</option>
+                    <option value="Tuesday, Dec 7">Tuesday, Dec 7</option>
+                    <option value="Wednesday, Dec 8">Wednesday, Dec 8</option>
+                    <option value="Thursday, Dec 9">Thursday, Dec 9</option>
+                    <option value="Friday, Dec 10">Friday, Dec 10</option>
+                    <option value="Saturday, Dec 11">Saturday, Dec 11</option>
+                  </select>
+            </div>
+            <div class="form-group">
+                <p>Hour:</p>
+                <input class="form-control" type="textarea" id="hour" name="hour" placeholder=""  th:field="*{hour}" />
+            </div>
+            <div class="form-group">
+                <p>Minutes:</p>
+                <input class="form-control" type="textarea" id="minutes" name="minutes" placeholder=""  th:field="*{minutes}" />
+            </div>
+            <div class="form-group">
+                <p>Location:</p>
+                <input class="form-control" type="textarea" id="location" name="location" placeholder=""  th:field="*{location}" />
+            </div>
+
+            <br></br>
+            <input class="btn btn-primary btn-block" type="submit" name="action" id="schedule" value="Submit">
+        </form>
+
+        <a class="btn btn-secondary" style="margin-top: 40px;" href="/">Return to home</a>
+        <br></br>
+        <br></br>
+        <div class="confirmed">
+            <span th:text="${confirmed}" />
+        </div>
+    </div>
+ </body>
+
+ </html>

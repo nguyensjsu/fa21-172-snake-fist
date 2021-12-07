@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<head>
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> 
+
+</head>
+
+<body>
+    <div style="display:flex; flex-direction: column; justify-content: center; align-items: center">
+        <h1 style="padding-top: 40px; padding-bottom: 10px;">Contact Us</h1>
+        <text style="padding-bottom: 30px;">Please contact us by typing your inquiry in the following textbox and provide us with a contact email for us to get back to you. </text>
+        <form name="form" th:action="@{/contact}" th:object="${inquiry}" method="post" action="">
+            <div class="form-group">
+                <p>Email:</p>
+                <input class="form-control" type="textarea" id="email" name="email" placeholder=""  th:field="*{email}" /> 
+            </div>
+            <div class="form-group">
+                <p>Type your message here:</p>
+                <textarea class="form-control" rows="3" type="textarea" id="description" name="description" placeholder=""  th:field="*{description}"></textarea>
+            </div>
+            <br></br>
+            <input class="btn btn-primary btn-block" type="submit" name="action" id="contact" value="Submit">
+        </form>
+
+        <a class="btn btn-secondary" style="margin-top: 40px;" href="/">Return to home</a>
+        <br></br>
+        <br></br>
+        <div class="confirmed">
+            <span th:text="${confirmed}" />
+        </div>
+    </div>
+ </body>
+
+ </html>
