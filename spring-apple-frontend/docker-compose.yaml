@@ -7,7 +7,7 @@ services:
     networks:
       - network
     environment:
-      MYSQL_DATABASE: "back_office"
+      MYSQL_DATABASE: "frontend"
       # So you don't have to use root, but you can if you likes
       MYSQL_ROOT_PASSWORD: "cmpe172"
     ports:
@@ -15,8 +15,8 @@ services:
       - 3306:3306
     volumes:
       - /tmp:/tmp
-  backoffice:
-    image: spring-back-office
+  frontend:
+    image: spring-frontend
     restart: on-failure
     volumes:
       - /tmp:/tmp
