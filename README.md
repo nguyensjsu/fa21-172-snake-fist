@@ -14,14 +14,15 @@
 ### Technical Requirements
 * Software Stack & Tools
   1. Front Office Portal:
-    * Front-end: EJS as Template Engine in Node.js, HTML, CSS, 
-    * Backend:
+    * Front-end: JavaScript, EJS as Template Engine in Node.js, HTML, CSS
+    * Backend: Spring Framework
   3. Back Office Portal:
-    * Front-end:
-    * Backend:
+    * Front-end: HTML, CSS
+    * Backend: Spring Framework
 # Snakefist Individual Team Member's Journal
-## Individual Journal by Thi Tuong Vi Nguyen
+## Individual Journal by Thi Tuong Vi Nguyen by Dec 3, 2021:
 ### Accomplished Tasks:
+#### Front Office Portal
 * Product Details Page (Backend, Frontend)
 * User Sign-up/Login Page (Backend, Frontend)
 * Product Browsing Page(Backend, Frontend)
@@ -32,5 +33,13 @@
 * https://github.com/nguyensjsu/fa21-172-snake-fist/commit/fa847b99aec2c926b5f0fdad988c46b30d864691
 * https://github.com/nguyensjsu/fa21-172-snake-fist/commit/4df1e04253fcf06eece6f0c94ac409a1da9c7149
 ### Discussion of challenges and solutions:
+## Individual Journal by Thi Tuong Vi Nguyen by Dec 6, 2021:
+### Accomplished Tasks:
+#### Back Office Portal
+* Payment Page with CyberSource Integration (Frontend, Backend)
+* Request Refund with RabbitMQ Integration (Frontend, Backend)
+* Order Review Page (Backend)
+### Discussion of accomplishment:
+
 
 
