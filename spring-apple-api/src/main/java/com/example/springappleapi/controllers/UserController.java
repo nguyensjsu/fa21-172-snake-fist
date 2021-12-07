@@ -8,12 +8,15 @@ import com.example.springappleapi.models.PaymentsCommand;
 import com.example.springappleapi.models.Product;
 import com.example.springappleapi.models.ShoppingCart;
 import com.example.springappleapi.models.ShoppingCartItem;
+import com.example.springappleapi.models.Ticket;
 import com.example.springappleapi.repositories.PaymentsCommandRepository;
 import com.example.springappleapi.repositories.ProductRepository;
 import com.example.springappleapi.repositories.ShoppingCartItemRepository;
 import com.example.springappleapi.repositories.ShoppingCartRepository;
+import com.example.springappleapi.repositories.TicketRepository;
 import com.example.springappleapi.repositories.UserRepository;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,6 +38,8 @@ import com.example.springappleapi.Exceptions.UsernameOrEmailTakenException;
 import com.example.springappleapi.Exceptions.WrongUsernamePasswordException;
 import com.example.springappleapi.Utils.CartUpdatePayload;
 import com.example.springappleapi.Utils.SignupPayload;
+import com.example.springappleapi.messaging.Producer;
+import com.example.springappleapi.messaging.Receiver;
 import com.example.springappleapi.models.User;
 import com.example.springappleapi.payment.PaymentProcessor;
 
@@ -50,6 +55,12 @@ public class UserController {
     private ShoppingCartItemRepository itemCartRepository;
     @Autowired
     private PaymentsCommandRepository paymentsCommandRepository;
+    @Autowired
+    private TicketRepository ticketRepository;
+    @Autowired
+	Producer rabbitMQProducer;
+    @Autowired
+    Receiver rabbitMQReceiver;
 
     @Value("${cybersource.apihost}") String apiHost;
     @Value("${cybersource.merchantkeyid}") String merchantKeyId;
@@ -239,6 +250,94 @@ public class UserController {
             paymentsCommandRepository.save(command);
 
             return activeCart;
+        }
+        else {
+            throw new UserNotFoundException(userId);
+        }
+    }
+
+    @PostMapping(value = "/user/{userId}/shoppingCart/{cartId}/refund")
+	public String producer(@PathVariable long userId, @PathVariable long cartId) {
+        Optional<User> user = userRepository.findById(userId);
+
+        if (user.isPresent()){
+            Optional<ShoppingCart> cart = cartRepository.findById(cartId);
+            if (cart.isPresent()){
+                ShoppingCart order = cart.get();
+
+                Ticket ticket = new Ticket();
+                ticket.setUserId(userId);
+                ticket.setCartId(cartId);
+                ticket.setRequest("REFUND");
+                ticket.setStatus("CREATED");
+
+                ticket = ticketRepository.save(ticket);
+                // Ticket ticket = new Ticket(1l, 2l, 4l, "REFUND", "CREATED", "can I get a refund?");
+		        rabbitMQProducer.send(ticket);
+
+                PaymentsCommand transaction = order.transactions.get(order.transactions.size() - 1);
+                transaction.setStatus("REFUND_REQUESTED");
+
+                paymentsCommandRepository.save(transaction);
+		        return "{\"status\":\"ok\"}";
+            }
+            else {
+                throw new CartNotFoundException(cartId);
+            }
+        }
+        else {
+            throw new UserNotFoundException(userId);
+        }
+	}
+
+    @PostMapping(value = "/admin/shoppingCart/{cartId}/refund")
+	public String refund(@PathVariable long cartId) {
+        Optional<ShoppingCart> cart = cartRepository.findById(cartId);
+        if (cart.isPresent()){
+            ShoppingCart order = cart.get();
+
+            float total = 0;
+
+            for (int i = 0; i < order.items.size(); i++){
+                total += order.items.get(i).getQuantity() * order.items.get(i).item.getPrice();
+            }
+
+            total = total * 1.1f;
+
+            PaymentProcessor paymentProcessor = new PaymentProcessor(apiHost, merchantKeyId, merchantsecretKey, merchantId);
+            PaymentsCommand transaction = order.transactions.get(order.transactions.size() - 1);
+            String res = paymentProcessor.refund(transaction, "" + total, order.getId()); 
+            
+            transaction.setStatus("REFUNDED");
+            transaction.setResponse(transaction.getResponse() + "|" + res);
+            paymentsCommandRepository.save(transaction);
+
+            return "{\"status\":\"ok\"}";
+        }
+        else {
+            throw new CartNotFoundException(cartId);
+        }
+	}
+
+    @RequestMapping("/admin/ticket/requests")
+    @GetMapping
+    public ShoppingCart getRequestFromQueue() {
+        Ticket ticket = rabbitMQReceiver.receive();
+        if (ticket == null) return null;
+        
+        long userId = ticket.getUserId();
+        long cartId = ticket.getCartId();
+
+        Optional<User> user = userRepository.findById(userId);
+
+        if (user.isPresent()){
+            Optional<ShoppingCart> cart = cartRepository.findById(cartId);
+            if (cart.isPresent()){
+                return cart.get(); 
+            }
+            else {
+                throw new CartNotFoundException(cartId);
+            }
         }
         else {
             throw new UserNotFoundException(userId);

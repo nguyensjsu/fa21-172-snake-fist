@@ -48,14 +48,9 @@
         }
         .grid-detail {
             margin: 20px 0;
-            /* text-align: center; */
         }
-        .grid-detail p:last-child {
-            transition: .5s;
-            margin-top: 10px;
-        }
-        .grid-item:hover > .grid-detail p:last-child {
-            color: #3498db;
+        .secondary-text {
+            color: rgb(118, 118, 118)
         }
 
     </style>
@@ -70,12 +65,36 @@
                 <% for(let i=0; i < orders.length; i++) {%>
                     <div class="grid-item">
                         <!-- <div class="row"> -->
-                            <span class="col-6"><img src="<%= orders[i].images[0] %>"></span>
-                            <div class="col-6 grid-detail">
-                                <h5>Order#: <%= orders[i].transactionId %> </h5>
-                                <div><%= orders[i].total %></div>
-                                <div><%= orders[i].itemCount %> item(s)</div>
-                                <!-- <div>12/02/2020 2:34pm</div> -->
+                            <span class="col-3"><img style="max-width:10rem" src="<%= orders[i].images[0] %>"></span>
+                            <div class="col-9 grid-detail">
+                                <div align="right">
+                                    <div  style="padding: 1rem" class="dropdown-toggle" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></div>
+                                    
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                        <% if (orders[i].status == "SUCCESS") { %>
+                                            <a class="dropdown-item" onclick="requestRefund(<%= orders[i].id %>)" href="#">Request Refund</a>
+                                        <% } else { %>
+                                            <a class="dropdown-item" style="color: rgb(186, 186, 186);">Request Refund</a>
+                                        <% } %>
+
+                                    </div>
+                                </div>
+                                
+
+
+                                <strong>Order#: <%= orders[i].transactionId %> </strong>
+                                <% if (orders[i].status == "SUCCESS") { %>
+                                    <span class="badge badge-pill badge-success">Success</span>
+                                <% } else if (orders[i].status == "REFUND_REQUESTED") { %>
+                                    <span class="badge badge-pill badge-info">Refund Requested</span>
+                                <% } else { %>
+                                    <span class="badge badge-pill badge-success">Refunded</span>
+                                <% } %>
+
+                                <div class="secondary-text"><%= orders[i].total %></div>
+                                <div class="secondary-text"><%= orders[i].itemCount %> item(s)</div>
+                                <br>
+                                
                             </div>
                         <!-- </div> -->
                     </div>
@@ -85,6 +104,22 @@
         </div>
         <!--end container-->
     </section>
+
+    <script>
+        function requestRefund(id) {
+            $.ajax({
+                type: "POST",
+                url: (`http://localhost:8080/user/${currentUser.id}/shoppingCart/${id}/refund`),
+                contentType: "application/json",
+                success: function(xhr, res, options){
+                    window.location.reload();
+                },
+                error: function(xhr){      
+                    alert(xhr);
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>

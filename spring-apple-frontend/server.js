@@ -204,7 +204,9 @@ app.get('/user/:userId/orders', (req, res) => {
                 total: formatter.format(subtotal * 1.1),
                 userId: req.params.userId,
                 transactionId: JSON.parse(transaction.response.split("|")[0]).id,
-                images: cart.items[0].item.images
+                images: cart.items[0].item.images,
+                status: cart.transactions[cart.transactions.length - 1].status,
+                id: cart.id
             };
         })
 

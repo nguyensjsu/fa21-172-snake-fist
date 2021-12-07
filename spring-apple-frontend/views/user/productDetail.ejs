@@ -144,21 +144,21 @@
         }
         else {
           $.ajax({
-                type: "POST",
-                url: (`http://localhost:8080/user/${currentUser.id}/shoppingCart/modify`),
-                contentType: "application/json",
-                data: JSON.stringify({
-                  operation: "ADD",
-                  productId: "<%= item.id %>",
-                  quantity: 1
-                }),
-                success: function(xhr, res, options){
-                    $('#modal-message').modal("toggle");
-                },
-                error: function(xhr){      
-                    alert(xhr);
-                }
-            });
+              type: "POST",
+              url: (`http://localhost:8080/user/${currentUser.id}/shoppingCart/modify`),
+              contentType: "application/json",
+              data: JSON.stringify({
+                operation: "ADD",
+                productId: "<%= item.id %>",
+                quantity: 1
+              }),
+              success: function(xhr, res, options){
+                  $('#modal-message').modal("toggle");
+              },
+              error: function(xhr){      
+                  alert(xhr);
+              }
+          });
         }
       }
     </script>

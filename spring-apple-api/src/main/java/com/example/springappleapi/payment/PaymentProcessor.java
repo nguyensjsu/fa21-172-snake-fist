@@ -1,6 +1,11 @@
 package com.example.springappleapi.payment;
 
 import com.example.springcybersource.*;
+
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
+
 import com.example.springappleapi.models.*;
 
 public class PaymentProcessor {
@@ -99,5 +104,40 @@ public class PaymentProcessor {
 		}
 		return "" + authResponse.toJson();
     }	
+
+	public String refund(PaymentsCommand paymentCommand, String amount, long cartId) {
+		RefundRequest refund = new RefundRequest() ;
+		RefundResponse refundResponse = new RefundResponse() ;		
+		boolean refundValid = false ;
+		String[] responses = paymentCommand.getResponse().split("\\|");
+		
+		JSONObject res;
+		try {
+			JSONParser parser = new JSONParser();
+			Object obj = parser.parse(responses[responses.length - 1]);
+			res = (JSONObject) obj;
+		}
+		catch(Exception e){
+			res = new JSONObject();
+		}
+
+		CyberSourceAPI api = new CyberSourceAPI() ;
+		CyberSourceAPI.setHost( apiHost ) ;
+		CyberSourceAPI.setKey( merchantKeyId ) ;
+		CyberSourceAPI.setSecret(merchantsecretKey ) ;
+		CyberSourceAPI.setMerchant( merchantId ) ;
+
+		refund.reference = "CartId: " + cartId ;
+		refund.captureId = res.getAsString("id") ;
+		refund.transactionAmount = amount ;
+		refund.transactionCurrency = "USD" ;
+		System.out.println("\n\nRefund Request: " + refund.toJson() ) ;
+		refundResponse = api.refund(refund) ;
+		System.out.println("\n\nRefund Response: " + refundResponse.toJson() ) ;
+		if ( refundResponse.status.equals("PENDING") ) {
+			refundValid = true ;
+		}
+		return refundResponse.toJson();
+	}
 }
 

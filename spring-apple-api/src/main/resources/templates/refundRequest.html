@@ -1,0 +1,225 @@
+<html>
+<!-- ORIGINAL APPLE WEBSITE -->
+<!-- https://www.apple.com/th-en/shop/browse/home_th_en -->
+<head>
+    <script src="https://kit.fontawesome.com/afaa2c21f5.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/afaa2c21f5.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,700&display=swap');
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'roboot', sans-serif;
+            text-decoration: none;
+        }
+        body {
+            background-color: #f5f5f7;
+        }
+        nav {
+            width: 100%;
+            height: 48px;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            margin-bottom: 0px;
+        }
+        nav ul li {
+            margin: 0 40px;
+        }
+        nav ul li a {
+            font-weight: 300;
+            color: #adadad;
+            transition: 600ms;
+        }
+        nav ul li a:hover {
+            color: #f5f5f7;
+        }
+        .order-section {
+            width: 100%;
+            height: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 0;
+            cursor: pointer;
+        }
+        .order-section h2 {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+        .container {
+            width: 700;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+        .grid {
+            width: 100%;
+        }
+        .grid-item {
+            background: white;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            transition: .5s;
+            border-radius: 1rem;
+            box-shadow: 2px 4px 12px rgb(0 0 0 / 8%);
+            margin: 2rem;
+        }
+        .grid-item:hover {
+            transform: scale(1.02);
+            box-shadow: 2px 4px 12px rgb(0 0 0 / 18%)
+        }
+        .grid-item img {
+            width: 300px;
+        }
+        .grid-detail {
+            margin: 20px 0;
+        }
+        .secondary-text {
+            color: rgb(118, 118, 118)
+        }
+
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/"><i class="fab fa-apple"></i></a></li>
+            <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+        
+            
+        </ul>
+    </nav>
+
+    <section class="order-section">
+        <div class="container">
+            <h2>Refund Request</h2>
+            <button type="button" onclick="getRefundRequest()" class="btn btn-sm btn-outline-dark">Get Ticket</button>
+            <div id="grid-content" class="grid">
+                No Ticket Available
+            </div>
+            <!--end grid-->
+        </div>
+        <!--end container-->
+    </section>
+
+    <script>
+        let hasPreviousTicket = false;
+
+        function getRefundRequest() {
+            $.ajax({
+                type: "GET",
+                url: (`http://localhost:8080/admin/ticket/requests`),
+                success: function(cart, res, options){
+                    if (cart){
+                        let ticket;
+                        console.log(cart, null, 4)
+                        let formatter = new Intl.NumberFormat('en-US', {
+                            style: 'currency',
+                            currency: 'USD',
+                        });
+
+                        if (cart){
+                            let itemCount = 0;
+                            let subtotal = 0;
+                            let transaction = cart.transactions[cart.transactions.length - 1];
+                            (cart.items || []).map((item) => {
+                                itemCount += item.quantity;
+                                subtotal += (item.quantity * item.item.price);
+                                return {
+                                    ...item.item,
+                                    quantity: item.quantity
+                                }
+                            });
+                    
+                            ticket = {
+                                itemCount,
+                                total: formatter.format(subtotal * 1.1),
+                                transactionId: JSON.parse(transaction.response.split("|")[0]).id,
+                                images: cart.items[0].item.images,
+                                status: cart.transactions[cart.transactions.length - 1].status,
+                                id: cart.id
+                            };
+                        }
+
+                        console.log(ticket)
+                        let gridContent = document.getElementById("grid-content");
+                        let payload = "";
+
+                        if (ticket)
+                        payload += 
+                            `<div class="grid-item">
+                                <span class="col-3"><img style="max-width:10rem" src="${ticket.images[0]}"></span>
+                                <div class="col-9 grid-detail">
+                                    <strong>Order#: ${ticket.transactionId} </strong>
+                                    <div class="secondary-text">${ticket.total}</div>
+                                    <div class="secondary-text">${ticket.itemCount} item(s)</div>
+                                    <button id="refund-btn-${ticket.id}" type="button" class="btn btn-sm btn-outline-info" onclick="refund(${ticket.id})">Refund</button>
+                                    <br>
+                                </div>
+                            </div>`
+                        
+                        if (hasPreviousTicket){
+                            document.getElementById("grid-content").innerHTML = document.getElementById("grid-content").innerHTML + payload;
+                        }
+                        else {
+                            document.getElementById("grid-content").innerHTML = payload;
+                        }
+                        hasPreviousTicket = true;
+                    }
+                    else {
+                        alert("No ticket available")
+                    }
+                },
+                error: function(xhr){      
+                    alert(xhr);
+                }
+            });
+        }
+
+        function refund(cartId) {
+            $.ajax({
+                type: "POST",
+                url: (`http://localhost:8080/admin/shoppingCart/${cartId}/refund`),
+                success: function(res, res, options){
+                    // res = JSON.parse(res);
+
+                    // if (res == `{"status":"ok"}` || res.status == "ok"){
+                        alert("Refund successfully")
+                        document.getElementById(`refund-btn-${cartId}`).disabled = true;
+                    // }
+                    // else {
+                    //     alert("Refund fail")
+                    // }
+                },
+                error: function(xhr){      
+                    alert(xhr);
+                }
+            });
+        }
+        
+    </script>
+</body>
+
+</html>

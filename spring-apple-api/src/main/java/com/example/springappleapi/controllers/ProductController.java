@@ -78,10 +78,10 @@ public class ProductController {
             .body(productRepository.save(product));
     }
 
-    // @PutMapping("/products/{prodId}")
-    // ResponseEntity<?> updateCard(@RequestBody Product product) throws URISyntaxException {
-    //     return ResponseEntity
-    //         .created(new URI("placeholder"))
-    //         .body(productRepository.save(product));
-    // }
+    @PutMapping("/products/{prodId}")
+    ResponseEntity<?> updateCard(@RequestBody Product product) throws URISyntaxException {
+        return ResponseEntity
+            .created(new URI("placeholder"))
+            .body(productRepository.save(product));
+    }
 }
