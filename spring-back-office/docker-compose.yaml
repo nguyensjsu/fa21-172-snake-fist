@@ -3,7 +3,7 @@ version: "3"
 services:
 
   db:
-    image: mysql:5.7
+    image: mysql:8.0
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: back_office
@@ -15,7 +15,7 @@ services:
       MYSQL_ROOT_PASSWORD: cmpe172
     ports:
       # <Port exposed> : < MySQL Port running inside container>
-      - 3309:3306
+      - 3306:3306
     volumes:
       - /tmp:/tmp
 
@@ -29,7 +29,7 @@ services:
     depends_on:
       - db 
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/back_office?autoReconnect=true&useSSL=false
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/back_office
 
 
   # lb:

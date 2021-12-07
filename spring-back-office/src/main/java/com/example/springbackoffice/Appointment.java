@@ -19,7 +19,7 @@ public class Appointment {
     @Getter@Setter
     private @Id @GeneratedValue Long id;
     @Getter@Setter
-    private int day;
+    private String day;
     @Getter@Setter
     private int hour;
     @Getter@Setter
